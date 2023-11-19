@@ -3,30 +3,45 @@
     <img
       :src="`https://image.tmdb.org/t/p/w300_and_h450_bestv2${movie.poster_path}`"
       :alt="movie.original_title"
-      class="movie-img" />
+      class="movie-img"
+    />
     <div>
       <div class="movie-name">
         {{ movie.original_title }} ({{ movie.release_date }})
       </div>
       <span class="movie-overview">{{ movie.overview }}</span>
       <div class="movie-buttons">
-        <button class="btn movie-buttons-watched">
+        <button class="btn movie-buttons-watched" @click="setStatus(movie.id)">
           <span v-if="!movie.isWatched">Watched</span>
           <span v-else>Unwatched</span>
         </button>
-        <button class="btn movie-buttons-delete">Delete</button>
+        <button class="btn movie-buttons-delete" @click="deleteMovie(movie.id)">
+          Delete
+        </button>
       </div>
     </div>
   </div>
 </template>
 
 <script setup>
+import { useMovieStore } from '../store/MovieStore';
+
+const movieStore = useMovieStore();
+
+const setStatus = (id) => {
+  movieStore.switchWatchStatus(id);
+};
+
+const deleteMovie = (id) => {
+	movieStore.deleteMovie(id);
+}
+
 const props = defineProps({
-	movie: {
-		required: true,
-		type: Object
-	}
-})
+  movie: {
+    required: true,
+    type: Object,
+  },
+});
 </script>
 
 <style lang="css" scoped>
