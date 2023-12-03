@@ -20,7 +20,7 @@
         </button>
       </div>
       <div class="movie-buttons" v-else>
-        <button class="btn btn_green">Add</button>
+        <button class="btn btn_green" @click="searchStore.addToList(movie)">Add</button>
       </div>
     </div>
   </div>
@@ -28,8 +28,10 @@
 
 <script setup>
 import { useMovieStore } from '../store/MovieStore';
+import { useSearchStore } from '../store/SearchStore';
 
 const movieStore = useMovieStore();
+const searchStore = useSearchStore();
 
 const setStatus = (id) => {
   movieStore.switchWatchStatus(id);
