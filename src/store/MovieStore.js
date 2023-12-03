@@ -1,31 +1,36 @@
 import { defineStore } from "pinia";
+import { ref, computed } from "vue";
 
-export const useMovieStore = defineStore('movieStore', {
-  state: () => ({
-    movies: [],
-    activeTab: 1,
-  }),
-  getters: {
-    watchedMovies() {
-      return this.movies.filter((movie) => movie.isWatched)
-    },
+export const useMovieStore = defineStore("movieStore", () => {
+  const movies = ref([]);
+  const activeTab = ref(1);
 
-    totalCountMovies() {
-      return this.movies.length
-    }
-  },
-  actions: {
-    switchWatchStatus(id) {
-      const idx = this.movies.findIndex(movie => movie.id === id)
-      this.movies[idx].isWatched = !this.movies[idx].isWatched
-    },
+  const watchedMovies = computed(() => {
+    return movies.value.filter((movie) => movie.isWatched)
+  });
 
-    setTab(id) {
-      this.activeTab = id
-    },
+  const totalCountMovies = computed(() => movies.value.length);
 
-    deleteMovie(id) {
-      this.movies = this.movies.filter(movie => movie.id !== id)
-    }
+  const switchWatchStatus = (id) => {
+    const idx = movies.value.findIndex(movie => movie.id === id)
+    movies.value[idx].isWatched = !movies.value[idx].isWatched
+  }
+
+  const setTab = (id) => {
+    activeTab.value = id
+  }
+
+  const deleteMovie = (id) => {
+    movies.value = movies.value.filter(movie => movie.id !== id)
+  }
+
+  return {
+    movies,
+    activeTab,
+    watchedMovies,
+    totalCountMovies,
+    switchWatchStatus,
+    setTab,
+    deleteMovie
   }
 })
